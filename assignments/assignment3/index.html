@@ -21,34 +21,14 @@
       </div>
     </div>
 
-    <!-- found-items should be implemented as a component -->
     <div class="row">
-      <span ng-if="menu.hasError()">{{ menu.error }}</span>
-      <div ng-if="!menu.hasError() && menu.found.length > 0">
-        <h3>Found Menu Items</h3>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Short Name</th>
-              <th>Description</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="item in menu.found">
-              <td>{{ $index + 1 }}</th>
-              <td>{{ item.name }}</td>
-              <td>{{ item.short_name }}</td>
-              <td>{{ item.description }}</td>
-              <td><button ng-click="menu.removeItem($index);">Don't want this one!</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <found-items
+        id="menu"
+        items="menu.found"
+        on-remove="menu.removeItem(index)">
+        <span class="warning">{{ menu.error }}</span>
+      </found-items>
     </div>
-    <!-- <found-items found-items="...." on-remove="...."></found-items> -->
   </div>
 </body>
 </html>

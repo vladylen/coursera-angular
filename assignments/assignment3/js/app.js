@@ -4,8 +4,45 @@
 angular.module('NarrowItDownApp', [])
 .controller('NarrowItDownController', NarrowItDownController)
 .service('MenuSearchService', MenuSearchService)
-.constant('ApiBasePath', "http://davids-restaurant.herokuapp.com");
+.constant('ApiBasePath', "http://davids-restaurant.herokuapp.com")
+.directive('foundItems', MenuItemsDirective);
 
+function MenuItemsDirective() {
+  var ddo = {
+    templateUrl: 'foundItems.html',
+    scope: {
+      items: '<',
+      onRemove: '&'
+    },
+    controller: MenuItemsDirectiveController,
+    controllerAs: 'menu',
+    bindToController: true,
+    link: MenuItemsDirectiveLink,
+    transclude: true
+  };
+
+  return ddo;
+}
+
+function MenuItemsDirectiveLink(scope, element, attrs, controller) {
+  scope.$watch('menu.emptyList()', function (newValue, oldValue) {
+    if (element.find('div.error').length > 0) {
+      if (newValue === true) {
+        element.find('div.error').show();
+      } else {
+        element.find('div.error').hide();
+      }
+    }
+  });
+}
+
+function MenuItemsDirectiveController() {
+  var menu = this;
+
+  menu.emptyList = function () {
+    return !menu.items.length > 0;
+  };
+}
 
 NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController(MenuSearchService) {
@@ -17,6 +54,8 @@ function NarrowItDownController(MenuSearchService) {
 
   menu.search = function () {
     if (menu.searchTerm.length === 0) {
+      menu.found = [];
+
       return menu.error = "Nothing found";
     }
 
@@ -27,8 +66,9 @@ function NarrowItDownController(MenuSearchService) {
         menu.error = "Nothing found";
       } else {
         menu.error = "";
-        menu.found = response;
       }
+
+      menu.found = response;
     })
     .catch(function (error) {
       console.log(error);
