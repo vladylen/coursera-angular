@@ -26,10 +26,15 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
       }]
     }
   })
-  .state('itemDetail', {
+  .state('menuItems', {
     url: '/menu-items/{categoryShortName}',
     templateUrl: 'src/menu/templates/menu-items.template.html',
-    controller: 'ItemDetailController as items'
+    controller: 'MenuItemsController as menuItems',
+    resolve: {
+      items: ['$stateParams', 'MenuDataService', function ($stateParams, MenuDataService) {
+        return MenuDataService.getItemsForCategory($stateParams.categoryShortName);
+      }]
+    }
   });
 }
 

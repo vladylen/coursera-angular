@@ -2,20 +2,13 @@
 'use strict';
 
 angular.module('MenuApp')
-.controller('ItemDetailController', ItemDetailController);
+.controller('MenuItemsController', MenuItemsController);
 
-ItemDetailController.$inject = ['$stateParams', 'MenuDataService']
-function ItemDetailController($stateParams, MenuDataService) {
-  var itemDetail = this;
+MenuItemsController.$inject = ['items']
+function MenuItemsController(items) {
+  var menuItems = this;
 
-  var promise = MenuDataService.getItemsForCategory($stateParams.categoryShortName);
-
-  promise.then(function (response) {
-    itemDetail.items = response;
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+  menuItems.items = items;
 }
 
 })();
