@@ -1,0 +1,15 @@
+<div class="container">
+  <span ng-if="!infoCtrl.hasCustomer()">
+    Not Signed Up Yet. <a ui-sref="public.signup">Sign up Now!</a>
+  </span>
+  <ul ng-if="infoCtrl.hasCustomer()">
+    <li>First Name: {{ infoCtrl.customer.firstName }}</li>
+    <li>Last Name: {{ infoCtrl.customer.lastName }}</li>
+    <li>Email: {{ infoCtrl.customer.email }}</li>
+    <li>Phone: {{ infoCtrl.customer.phone }}</li>
+    <li>Favorite Menu Number: <br />
+        <menu-item menu-item="infoCtrl.menuItem">
+        </menu-item>
+    </li>
+  </ul>
+</div>
